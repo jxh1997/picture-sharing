@@ -1,0 +1,28 @@
+<!--pages/release/index.wxml-->
+<!-- 选择图片 -->
+<view class="page__bd">
+  <mp-cells>
+    <mp-cell>
+      <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
+        files="{{files}}" max-count="5" title="请选择图片" delete="true"></mp-uploader>
+    </mp-cell>
+  </mp-cells>
+</view>
+
+<!-- 其他内容 -->
+<view class="form-page">
+  <form catchsubmit="formSubmit" catchreset="formReset" class="form-content">
+    <view class="page-section">
+      <!-- 标题 -->
+      <input class="weui-input title-input" name="input" placeholder="认真填写标题会有更多赞哦 ~ " />
+      <view class="line"></view>
+      <!-- 正文内容 -->
+      <textarea class="text-textarea" name="textarea" placeholder="添 加 正 文" placeholder-style="color:#a3a3a3;" />
+      <view class="line"></view>
+    </view>
+
+    <view class="sub-btn">
+      <view class="btn"> 发布作品 </view>
+    </view>
+  </form>
+</view>

@@ -1,0 +1,65 @@
+
+<!-- 未授权登录 -->
+<view wx:if="{{!isLogin}}">
+  <view class="un_login">
+    <image src="../../static/login-bj.jpg" mode="aspectFit"></image>
+  </view>
+  <text class="un_login_font">您当前未登录，请进行如下操作：</text>
+  <button class="un_login_btn" wx:if="{{canIUse}}" bindtap="getUserProfile" type="primary">微信一键登录</button>
+  <view wx:else>请升级微信版本</view>
+</view>
+
+<!-- 已授权登录 -->
+<view wx:else>
+  <view class="container">
+    <!-- 用户信息 -->
+    <image src="../../static/my@bg.png" class="bg"></image>
+    <open-data type="userAvatarUrl" class="avatar avatar-position"/>
+    <open-data type="userNickName" class="avatar-container avatar-position"/>
+      
+    <!-- tab选项卡 -->
+    <view class="about-container">
+        <view 
+          class="about-us {{item.typeId == currentId ? 'nav-hover' : '' }}" 
+          wx:for="{{tabNav}}" 
+          wx:key="id" 
+          id='{{item.typeId}}' 
+          catchtap='handleTap'
+        >
+          <image src="{{item.icon_HL}}" wx:if="{{ item.typeId == currentId }}"/>
+          <image src="{{item.icon}}" wx:else/>
+          <text class="description">{{item.name}}</text>
+        </view>
+    </view>
+  </view>
+
+  <!-- 我的作品 -->
+  <view hidden='{{currentId != 1}}'>
+    <view wx:if="{{works.length == 0}}" class="nocontent">
+      <image class="no_img" src="../../static/no_zuopin.png"></image>
+      <view class="no_font">
+        还没有发布作品哦，快去
+        <text bindtap="gotoReleaseWorks">发布作品</text>
+        吧
+      </view>
+    </view>
+    <view wx:self>
+      {{works}}
+    </view>
+  </view>
+
+  <!-- 我的点赞 -->
+  <view hidden='{{currentId != 2}}'>
+    <view wx:if="{{works.length == 0}}" class="nocontent">
+      <image class="no_img" src="../../static/no_dianzan.png"></image>
+      <view class="no_font">
+        还没有点赞任何作品哦，快去
+        <text bindtap="gotoIndexPage">点赞</text>
+        吧
+      </view>
+    </view>
+    <view wx:self>
+      {{works}}
+    </view>
+  </view>
+</view>

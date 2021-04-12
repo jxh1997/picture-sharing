@@ -1,0 +1,33 @@
+<view class="page-body">
+  <!-- 主页图片推荐 -->
+  <view class="page-section page-section-spacing swiper">
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}"
+      circular="{{circular}}">
+      <block wx:for="{{recommend}}" wx:key="*this">
+        <swiper-item>
+          <image src="{{item}}" class="swiper-img" mode="widthFix"></image>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- 所有图片列表 -->
+  <view class="img-list">
+    <ul>
+      <li wx:for="{{imgListL}}" wx:key="index">
+        <image class="pic-img" src="{{item.pic}}" mode="aspectFit"></image> 
+        <text class="title">{{item.title}}</text>
+        <view class="img-list-other">
+          <view class="avatar">
+            <image class="avatar-img" src="{{item.avatar}}"></image>
+          </view>
+          <view class="name">{{item.name}}</view>
+          <view class="collection" data-id="{{item.id}}" data-dex="{{index}}" bindtap="giveLikes">
+            <image class="fabulous" src="../../static/fabulous_HL.png" mode="aspectFit" wx:if="{{item.fabulousState}}"></image>
+            <image class="fabulous" src="../../static/fabulous.png" mode="aspectFit" wx:else></image>
+            <text>{{item.collection}}</text>
+          </view>
+        </view>
+      </li>
+    </ul>
+  </view>
+</view>
