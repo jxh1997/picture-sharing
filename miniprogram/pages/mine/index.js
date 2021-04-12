@@ -1,6 +1,8 @@
 // pages/mine/index.js
 const db = wx.cloud.database();
 const app = getApp();
+const util = require('../../utils/util');
+
 Page({
 
   /**
@@ -9,7 +11,7 @@ Page({
   data: {
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     isLogin: false,
-    currentId: '1',
+    currentId: 1,
     tabNav: [{
       name: '我的作品',
       typeId: '1',
@@ -26,9 +28,9 @@ Page({
   },
 
   //点击每个导航的点击事件
-  handleTap: function(e) {
+  handleTap: function (e) {
     let curred_id = e.currentTarget.id;
-    if(curred_id){
+    if (curred_id) {
       this.setData({
         currentId: curred_id
       })
@@ -41,71 +43,59 @@ Page({
   onLoad: function (options) {
     let that = this;
     // 查看是否授权
-    wx.getSetting({
-      success (res){
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wx.getUserInfo({
-            success: function(res) {
-              console.log("用户授权了: " , res.userInfo)
+    wx.cloud.callFunction({
+      name: 'getopenid',
+      complete: res => {
+        const openid = res.result.openid
+        // 查询数据库是否有该用户信息
+        db.collection('user').where({
+          _openid: openid
+        })
+          .get()
+          .then(res => {
+            if (res.data == "") {
+              console.log('用户未授权，前往授权登录!');
+              that.setData({
+                isLogin: false
+              })
+            } else {
+              console.log("已经登录过不用授权，直接登录")
               that.setData({
                 isLogin: true
               })
             }
           })
-        } else {
-          //用户没有授权
-          console.log("用户没有授权");
-          that.setData({
-            isLogin: false
-          })
-        }
       }
     })
   },
 
   // 点击授权
-  getUserProfile (e) {
+  getUserProfile(e) {
     let that = this;
     wx.getUserProfile({
       desc: '用于获取个人基本信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
       success: res => {
-        console.log(res);
         app.globalData.userInfo = res.userInfo;
         that.setData({
           isLogin: true
         })
-        // 获取openid
         wx.cloud.callFunction({
           name: 'getopenid',
           complete: res => {
-            const openid = res.result.openid
-            // 查询数据库是否有该用户信息
-            db.collection('user').where({
-              _openid: openid
-            })
-            .get()
-            .then(res => {
-              console.log(res);
-              if(res.data == "") {
-                console.log('授权登录成功!');
-                that.setData({
-                  isLogin: true
-                })
-                // 将用户信息添加进数据库
-                db.collection('user').add({
-                  data: {
-                    // nickName: res.userInfo.
-                  }
-                })
+            // 将用户信息添加进数据库
+            db.collection('user').add({
+              data: {
+                nickName: app.globalData.userInfo.nickName,
+                avatarUrl: app.globalData.userInfo.avatarUrl,
+                time: util.formatTime(new Date()),
               }
             })
           }
         })
       }
-    }) 
-    
-    
+    })
+
+
 
 
     // let userInfo = e.detail.userInfo;
@@ -150,7 +140,7 @@ Page({
   // 跳转首页浏览作品
   gotoIndexPage() {
     wx.switchTab({
-      url: '../index/index',
+      url: '../home/index',
     })
   }
 })

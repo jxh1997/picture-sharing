@@ -1,3 +1,5 @@
+const db = wx.cloud.database();
+
 Page({
   onShareAppMessage() {
     return {
@@ -7,7 +9,7 @@ Page({
   },
 
   data: {
-    recommend: ['../../static/image/tuijian1.jpg', '../../static/image/tuijian2.jpg', '../../static/image/tuijian3.jpg'],
+    recommend: [],
     indicatorDots: true,
     vertical: false,
     autoplay: true,
@@ -125,5 +127,18 @@ Page({
     })
     console.log(that.data.imgList);
     console.log("点赞成功");
+  },
+
+  onLoad() {
+    wx.cloud.callFunction({
+      name: 'getRecom',
+      success: res => {
+        console.log("123: ", res);
+      },
+      fail: err => {
+        console.log(err);
+      }
+    })
+      
   },
 })

@@ -14,6 +14,9 @@ App({
       })
     }
 
-    this.globalData = {}
+    this.globalData = {
+      works: [],
+      fabulous: []
+    }
   }
 })
