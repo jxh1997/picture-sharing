@@ -1,15 +1,16 @@
+const app = getApp()
 const db = wx.cloud.database();
 
 Page({
-  onShareAppMessage() {
-    return {
-      title: 'swiper',
-      path: 'page/component/pages/swiper/swiper'
-    }
-  },
+  // onShareAppMessage() {
+  //   return {
+  //     title: 'swiper',
+  //     path: 'page/component/pages/swiper/swiper'
+  //   }
+  // },
 
   data: {
-    recommend: [],
+    recommend: ['../../static/image/3.jpg','../../static/image/6.jpg','../../static/image/7.jpg'],
     indicatorDots: true,
     vertical: false,
     autoplay: true,
@@ -129,16 +130,34 @@ Page({
     console.log("点赞成功");
   },
 
-  onLoad() {
-    wx.cloud.callFunction({
-      name: 'getRecom',
-      success: res => {
-        console.log("123: ", res);
-      },
-      fail: err => {
-        console.log(err);
+  // 获取主页图片推荐
+  getRecom() {
+    let that = this;
+    let recommend = [];
+    db.collection('recom').get({
+      success(res) {
+        // console.log(res);
+        let imgUrl = res.data;
+        imgUrl.map(item => {
+          recommend.push(item.img_url);
+        })
+        that.setData({
+          recommend: recommend
+        })
       }
     })
+  },
+  onLoad() {
+    this.getRecom();
+    // wx.cloud.callFunction({
+    //   name: 'getRecom',
+    //   success: res => {
+    //     console.log("123: ", res);
+    //   },
+    //   fail: err => {
+    //     console.log(err);
+    //   }
+    // })
       
   },
 })

@@ -5,7 +5,7 @@
   border-bottom: 8rpx solid rgb(211, 204, 204);
   margin-bottom: 40rpx;
 }
-swiper {
+swiper,.null-swiper{
   height: 400rpx;
 }
 .swiper-item{

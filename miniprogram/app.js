@@ -12,11 +12,17 @@ App({
         env: 'lxy-1gdai8lnee53da21',
         traceUser: true,
       })
+      // this.getRecom();
+     
     }
-
     this.globalData = {
+      userInfo: '',
       works: [],
-      fabulous: []
+      fabulous: [],
+      recommend:[],
     }
-  }
+  },
+  getRecom() {
+    
+  },
 })
