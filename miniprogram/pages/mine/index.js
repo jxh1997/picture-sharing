@@ -132,7 +132,7 @@ Page({
 
   // 跳转作品发布
   gotoReleaseWorks() {
-    wx.navigateTo({
+    wx.switchTab({
       url: '../release/index',
     })
   },

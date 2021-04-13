@@ -22,6 +22,10 @@
         "iconPath": "static/index.png",
         "selectedIconPath": "static/index_HL.png",
         "text": "首页"
+      },{
+        "pagePath": "pages/release/index",
+        "iconPath": "static/fabu.png",
+        "selectedIconPath": "static/fabu_HL.png"
       },
       {
         "pagePath": "pages/mine/index",
