@@ -99,3 +99,70 @@
 .no_font text {
   color: #f06060;
 }
+
+/* 作品列表样式 */
+
+.img-list {
+  background-color: rgb(250, 246, 246);
+  width: 100%;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+}
+.img-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.img-list ul li{
+  width: 49%;
+  background-color: #ffffff;
+  border: 1rpx solid #f5f5f5;
+  margin-bottom: 20rpx;
+  padding: 0 10rpx 20rpx 10rpx;
+  box-sizing: border-box;
+}
+.img-list ul li .pic-img{
+  width: 100%;
+  height: 420rpx;
+}
+.title {
+  font-weight: 600;
+  height: 80rpx;
+  overflow: hidden;  /* 溢出隐藏 */
+  text-overflow: ellipsis;  /* 转换成省略号 */
+  display: -webkit-box;  /*  转换成弹性盒子 */
+  -webkit-line-clamp: 2;  /*  控制指定行数超出换行 */
+  -webkit-box-orient: vertical;  /*  控制里面的内容排列方式 */
+}
+.img-list-other {
+  display: flex;
+  align-items: center;
+  margin-top: 16rpx;
+}
+.img-list-other .avatar .avatar-img {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+}
+
+.img-list-other .name {
+  margin-left: 10rpx;
+  font-size: 24rpx;
+  width: 150rpx;
+  overflow: hidden;
+  overflow: hidden;  /* 溢出隐藏  */
+  text-overflow: ellipsis;  /* 省略号显示  */
+  white-space: nowrap;  /* 不换行 */
+}
+.collection {
+  display: flex;
+  height: 60rpx;
+  flex-direction: row;
+  width: 100rpx;
+  font-size: 24rpx;
+  color: #333333;
+}
+.fabulous {
+  width: 60rpx;
+  height: 60rpx;
+}

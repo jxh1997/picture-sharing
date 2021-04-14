@@ -3,7 +3,7 @@
 <view class="page__bd">
   <mp-cells>
     <mp-cell>
-      <mp-uploader 
+      <!-- <mp-uploader 
         bindfail="uploadError"
         bindsuccess="uploadSuccess" 
         select="{{selectFile}}" 
@@ -12,7 +12,9 @@
         max-count="5" 
         title="请选择图片" 
         delete="true"
-      ></mp-uploader>
+      ></mp-uploader> -->
+      <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}" files="{{files}}" max-count="5" title="请选择图片"></mp-uploader>
+
     </mp-cell>
   </mp-cells>
 </view>

@@ -22,7 +22,4 @@ App({
       recommend:[],
     }
   },
-  getRecom() {
-    
-  },
 })

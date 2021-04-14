@@ -23,8 +23,9 @@ Page({
       icon: '../../static/icon2.png',
       icon_HL: '../../static/icon2_HL.png',
     }],
-    works: app.globalData.works,
-    fabulous: app.globalData.fabulous
+    works: [],
+    fabulous: [],
+    openid: '',
   },
 
   //点击每个导航的点击事件
@@ -46,10 +47,10 @@ Page({
     wx.cloud.callFunction({
       name: 'getopenid',
       complete: res => {
-        const openid = res.result.openid
+        that.data.openid = res.result.openid
         // 查询数据库是否有该用户信息
         db.collection('user').where({
-          _openid: openid
+          _openid: that.data.openid
         })
           .get()
           .then(res => {
@@ -63,6 +64,14 @@ Page({
               that.setData({
                 isLogin: true
               })
+              db.collection('user').where({
+                _openid: that.data.openid,
+              }).get({
+                success(res) {
+                  app.globalData.userInfo = res.data[0];
+                }
+              })
+              that.getUserWorks();
             }
           })
       }
@@ -94,9 +103,6 @@ Page({
         })
       }
     })
-
-
-
 
     // let userInfo = e.detail.userInfo;
     // if(userInfo) {
@@ -142,5 +148,20 @@ Page({
     wx.switchTab({
       url: '../home/index',
     })
-  }
+  },
+
+  // 获取当前用户发布的作品
+  getUserWorks() {
+    let that = this;
+    db.collection('works').where({
+      _openid: that.data.openid
+    })
+    .get()
+    .then(res => {
+      console.log(res.data);
+      that.setData({
+        works: res.data
+      })
+    })
+  },
 })

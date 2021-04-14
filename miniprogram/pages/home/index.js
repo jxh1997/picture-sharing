@@ -96,7 +96,6 @@ Page({
 
   onLoad() {
     this.getRecom();
-    this.getWorks()
   },
 
   onShow() {
