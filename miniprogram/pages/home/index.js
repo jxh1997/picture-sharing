@@ -2,13 +2,6 @@ const app = getApp()
 const db = wx.cloud.database();
 
 Page({
-  // onShareAppMessage() {
-  //   return {
-  //     title: 'swiper',
-  //     path: 'page/component/pages/swiper/swiper'
-  //   }
-  // },
-
   data: {
     recommend: [],
     indicatorDots: true,
@@ -17,45 +10,115 @@ Page({
     interval: 2000,
     duration: 500,
     circular: true,
-    works: []
+    works: [],
+    dzList: [],  // 当前用户点赞列表
   },
 
   // 点赞
   giveLikes(e) {
     let that = this;
     let current_id = e.currentTarget.dataset.id;
-    let current_index = e.currentTarget.dataset.dex;
-
-    let _imgList = [...that.data.imgListL];
-    // _imgList.map((ele) => {
-      // if( ele.id === current_id ) {
-      //   console.log(that.data.imgListL);
-      //   ele.fabulousState = !ele.fabulousState;
-      //   console.log(ele.fabulousState);
-      //   that.data.talks[current_index].is_like = 1
-      // }
-    // })
-    
-    for(let i in _imgList) {
-      if(i == current_index) {
-        if( _imgList[i].fabulousState ) {
-          // 已点赞，取消点赞
-          that.data.imgListL[current_index].fabulousState = false;
-          _imgList[i].collection --;
-          console.log("取消点赞");
-        } else {
-          // 未点赞，进行点赞
-          that.data.imgListL[current_index].fabulousState = true;
-          _imgList[i].collection ++;
-          console.log("点赞");
+    if (app.globalData.openid === '') {
+      wx.showToast({
+        title: '当前用户未登录，请前往登录',
+        icon: 'none'
+      })
+      setTimeout(() => {
+        wx.switchTab({
+          url: '../mine/index'
+        })
+      }, 1500)
+    } else {
+      that.data.dzList.push(current_id);
+      wx.cloud.callFunction({
+        name: 'giveLikes',
+        data: {
+          openid: app.globalData.openid,
+          dzList: that.data.dzList
+        },
+        success: res => {
+          wx.showToast({
+            title: '点赞成功',
+          })
+          that.getUserDianzan("give");
+        },
+        fail: res => {
+          console.log(res);
         }
-      }
+      })
     }
-    that.setData({
-      imgList: _imgList
+  },
+
+  // 取消点赞
+  cancelLikes(e) {
+    let that = this;
+    let current_id = e.currentTarget.dataset.id;
+    let dzList = [];
+
+    that.data.dzList.map((item, index) => {
+      if (item === current_id) {
+        for (let i = 0; i < that.data.works.length; i++) {
+          if (that.data.works[i].isDz && that.data.works[i]._id === current_id) {
+            const worksDZ = "works[" + i + "].isDz"
+            that.setData({
+              [worksDZ]: false
+            })
+          }
+        }
+      } else {
+        dzList.push(item);
+      }
     })
-    console.log(that.data.imgList);
-    console.log("点赞成功");
+    that.setData({
+      dzList: dzList
+    })
+    wx.cloud.callFunction({
+      name: 'giveLikes',
+      data: {
+        openid: app.globalData.openid,
+        dzList: that.data.dzList
+      },
+      success: res => {
+        wx.showToast({
+          title: '取消点赞',
+        })
+        that.getUserDianzan("cancel");
+      },
+      fail: res => {
+        console.log(res);
+      }
+    })
+  },
+
+  // 查询当前用户点赞作品列表
+  getUserDianzan(type) {
+    let that = this;
+    if (app.globalData.openid === '') {
+      that.getOpenid()
+    } else {
+      db.collection('user').where({
+        _openid: app.globalData.openid
+      })
+        .get()
+        .then(res => {
+          that.setData({
+            dzList: res.data[0].dzList
+          })
+          that.data.works.map((worksItem, index) => {
+            that.data.dzList.map(dzItem => {
+              if (worksItem._id === dzItem) {
+                that.setData({
+                  dzList: res.data[0].dzList
+                })
+                const worksDZ = "works[" + index + "].isDz"
+                that.setData({
+                  [worksDZ]: true
+                })
+              }
+            })
+          })
+        })
+    }
   },
 
   // 获取主页图片推荐
@@ -89,6 +152,18 @@ Page({
     })
   },
 
+  // 获取用户openid
+  getOpenid() {
+    let that = this;
+    wx.cloud.callFunction({
+      name: 'getopenid',
+      complete: res => {
+        app.globalData.openid = res.result.openid;
+        that.getUserDianzan()
+      }
+    })
+  },
+
   // 获取作品发布者信息
   // getWorkUser(openid) {
   //   console.log("---------" , openid);
@@ -99,6 +174,7 @@ Page({
   },
 
   onShow() {
-    this.getWorks()
+    this.getWorks();
+    this.getUserDianzan()
   }
 })

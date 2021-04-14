@@ -25,7 +25,6 @@ Page({
     }],
     works: [],
     fabulous: [],
-    openid: '',
   },
 
   //点击每个导航的点击事件
@@ -47,10 +46,10 @@ Page({
     wx.cloud.callFunction({
       name: 'getopenid',
       complete: res => {
-        that.data.openid = res.result.openid
+        app.globalData.openid = res.result.openid
         // 查询数据库是否有该用户信息
         db.collection('user').where({
-          _openid: that.data.openid
+          _openid: app.globalData.openid
         })
           .get()
           .then(res => {
@@ -65,7 +64,7 @@ Page({
                 isLogin: true
               })
               db.collection('user').where({
-                _openid: that.data.openid,
+                _openid: app.globalData.openid,
               }).get({
                 success(res) {
                   app.globalData.userInfo = res.data[0];
@@ -103,37 +102,6 @@ Page({
         })
       }
     })
-
-    // let userInfo = e.detail.userInfo;
-    // if(userInfo) {
-    //   // 用户按了允许授权按钮
-    //   console.log("用户的信息如下：" , userInfo);
-
-    //   wx.showToast({
-    //     title: '登录成功',
-    //     icon: 'success',
-    //     duration: 1500
-    //   })
-
-    //   // 授权成功后,通过改变 isLogin(是否登录) 的值，让实现页面显示出来，把授权页面隐藏起来
-    //   that.setData({
-    //     isLogin: true
-    //   });
-    // } else {
-    //   // 用户按了拒绝按钮
-    //   wx.showModal({
-    //     title: '警告',
-    //     content: '您拒绝授权，将无法查看个人中心，请授权之后再进入!',
-    //     showCancel: false,
-    //     confirmText: '返回授权',
-    //     success: function(res) {
-    //       // 用户没有授权成功，不需要改变 isLogin 的值 (false)
-    //       if(res.confirm) {
-    //         console.log('用户点击了“返回授权”按钮');
-    //       }
-    //     }
-    //   })
-    // }
   },
 
   // 跳转作品发布
@@ -154,11 +122,10 @@ Page({
   getUserWorks() {
     let that = this;
     db.collection('works').where({
-      _openid: that.data.openid
+      _openid: app.globalData.openid
     })
     .get()
     .then(res => {
-      console.log(res.data);
       that.setData({
         works: res.data
       })

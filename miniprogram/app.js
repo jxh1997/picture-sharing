@@ -12,14 +12,22 @@ App({
         env: 'lxy-1gdai8lnee53da21',
         traceUser: true,
       })
-      // this.getRecom();
-     
+      
+      let that = this;
+      // 查看是否授权
+      wx.cloud.callFunction({
+        name: 'getopenid',
+        complete: res => {
+          that.globalData.openid = res.result.openid;
+        }
+      })
     }
     this.globalData = {
+      openid: '',
       userInfo: '',
       works: [],
       fabulous: [],
-      recommend:[],
+      recommend: [],
     }
   },
 })
