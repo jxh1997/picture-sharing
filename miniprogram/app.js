@@ -14,11 +14,20 @@ App({
       })
       
       let that = this;
+      const db = wx.cloud.database();
+
       // 查看是否授权
       wx.cloud.callFunction({
         name: 'getopenid',
         complete: res => {
           that.globalData.openid = res.result.openid;
+          db.collection('user').where({
+            _openid: res.result.openid
+          })
+          .get()
+          .then(res => {
+            that.globalData.userInfo = res.data[0]
+          })
         }
       })
     }

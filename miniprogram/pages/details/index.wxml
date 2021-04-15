@@ -1,0 +1,79 @@
+<!--miniprogram/pages/details/index.wxml-->
+<view class="public-index-wrap">
+  <scroll-view scroll-y="{{true}}" class="_scroll-view" style=" {{('height:' + '100vh' + ';')}}">
+    <view class="_div public-swiper">
+      <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}"
+        class="_swiper">
+        <block wx:key="index" key="{{index}}" wx:for="{{works.pic_url}}" wx:for-index="index" wx:for-item="item">
+          <swiper-item class="_swiper-item">
+            <image src="{{item}}" mode="aspectFill" class="_swiper-img"></image>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class="_div information">
+      <view class="_div user-head">
+        <view class="_div head-l" catchtap="handleProxy">
+          <image src="{{works.avatar_url}}" class="avatar_img"></image>
+          <view class="_p">{{works.name}}</view>
+        </view>
+      </view>
+      <view class="_div content">
+        <view class="_div title">{{works.title}}</view>
+        <view class="_div desc">{{works.content}}</view>
+        <view class="_div time">{{works.time}}</view>
+      </view>
+    </view>
+    <view class="_div comment-list">
+      <view class="_div comment-title">评论专区</view>
+      <view wx:if="{{commentList.length === 0}}" class="nocontent">
+        <image class="no_img" src="/static/details/pinglun.png"></image>
+        <view class="no_font">
+          还没有评论哦，快去抢占沙发吧！
+        </view>
+      </view>
+      <view wx:self class="_ul">
+        <view wx:key="index" key="{{index}}" wx:for="{{commentList}}" wx:for-index="index" wx:for-item="item" class="_li">
+          <view class="_div comment-l">
+            <image src="{{item.avatarUrl}}" class="_img"></image>
+            <view class="_div user">
+              <view class="_div">{{item.nickName}}</view>
+              <view class="_p pl_text">
+                {{item.commentText}}
+              </view>
+              <view class="pl_time">{{item.fabuTime}}</view>
+            </view>
+          </view>
+          <view class="_div comment-r"></view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部功能区 -->
+  <view class="_div method-btn">
+    <view class="_div comment-text">
+      <input type="text" placeholder="写评论" value="{{postParams}}" bindinput="setCommentInput" maxlength="100"
+        class="_input" />
+      <image src="/static/details/release.png" bindtap="setComment" class="_img"></image>
+    </view>
+    <view class="_div btn">
+      <!-- 下载 -->
+      <view catchtap="handleProxy" class="_div {{[dataObj.isCollection ? 'active' : '']}}">
+        <image src="{{dataObj.isCollection ? '/static/details/markActive.png':'/static/details/down.png'}}"
+          mode="widthFix" class="_img"></image>
+      </view>
+      <!-- 点赞 -->
+      <view catchtap="handleProxy" class="_div {{[dataObj.isLike ? 'active' : '']}}">
+        <image src="{{dataObj.isLike ? '/static/details/likeActive.png':'/static/details/like.png'}}" mode="widthFix"
+          class="_img"></image>
+        {{works.dianzanNum}}
+      </view>
+      <!-- 评论数 -->
+      <view class="_div comment">
+        <image src="/static/details/message.png" mode="widthFix" class="_img"></image>
+        {{commentList.length}}
+      </view>
+    </view>
+  </view>
+</view>

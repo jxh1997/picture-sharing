@@ -1,0 +1,197 @@
+/* miniprogram/pages/details/index.wxss */
+.public-index-wrap {
+  position: relative;
+  padding-bottom: 100rpx
+}
+
+.public-index-wrap .information {
+  padding: 40rpx 20rpx
+}
+
+.public-index-wrap .information .user-head {
+  font-weight: 700;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx
+}
+
+.public-index-wrap .information .user-head .head-l {
+  display: flex;
+  align-items: center;
+  width: 100%
+}
+
+.avatar_img {
+  height: 80rpx;
+  width: 80rpx;
+  border-radius: 50%;
+  margin-right: 12rpx
+}
+
+.public-index-wrap .information .content .title {
+  font-size: 16;
+  font-weight: 700;
+  margin-bottom: 30rpx
+}
+
+.public-index-wrap .information .content .desc {
+  font-size: 28rpx
+}
+
+.public-index-wrap .information .content .time {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 20rpx
+}
+
+.public-index-wrap .comment-list {
+  padding-bottom: 100rpx
+}
+
+.public-index-wrap .comment-list .comment-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  padding: 0 20rpx;
+  margin-bottom: 40rpx
+}
+
+.public-index-wrap .comment-list ._ul {
+  padding: 0 20rpx
+}
+
+.public-index-wrap .comment-list ._ul ._li {
+  font-size: 24rpx;
+  border-bottom: 2rpx solid #eee;
+  padding: 20rpx 0
+}
+
+.comment-l {
+  display: flex;
+  width: 100%;
+}
+
+.public-index-wrap .comment-list ._ul ._li .comment-l ._img {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  margin-right: 20rpx
+}
+
+.user ._div {
+  color: #333;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  width: 100%;
+}
+
+.public-index-wrap .comment-list ._ul ._li .comment-l .user ._p {
+  color: #666;
+
+}
+
+.public-index-wrap .comment-list ._ul ._li .comment-l .user ._p ._span {
+  margin-left: 10rpx;
+  color: #999
+}
+
+.public-index-wrap .method-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  font-weight: 700;
+  border-top: 2rpx solid #eee;
+  background: #fff
+}
+
+.public-index-wrap .method-btn .comment-text {
+  width: 360rpx;
+  border-radius: 30rpx;
+  overflow: hidden;
+  font-weight: 400;
+  position: relative
+}
+
+.public-index-wrap .method-btn .comment-text ._input {
+  background: #f5f5f6;
+  padding: 0 64rpx 0 20rpx;
+  height: 56rpx
+}
+
+.public-index-wrap .method-btn .comment-text ._img {
+  position: absolute;
+  top: calc(50% - 16rpx);
+  right: 20rpx;
+  width: 40rpx;
+  height: 40rpx
+}
+
+.public-index-wrap .method-btn .btn {
+  display: flex;
+  align-items: center
+}
+
+.public-index-wrap .method-btn .btn ._div {
+  display: flex;
+  align-items: center;
+  margin-right: 20rpx;
+  transition: all .2s
+}
+
+.public-index-wrap .method-btn .btn ._div.active {
+  color: #ff2f2f
+}
+
+.public-index-wrap .method-btn .btn ._div ._img {
+  width: 60rpx
+}
+
+/* 更新样式 */
+.public-swiper{
+  height: 480rpx;
+}
+._swiper {
+  height: 480rpx;
+}
+_swiper-item {
+  height: 480rpx;
+}
+
+._swiper-img {
+  height: 100%;
+  width: 100%;
+}
+
+.nocontent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 40rpx;
+}
+.no_img {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 40rpx;
+}
+.no_font {
+  color: #bfbfbf;
+}
+.pl_time {
+  width: 100%;
+  margin-top: 20rpx;
+  text-align: end;
+}
+.pl_text {
+  font-size: 30rpx;
+}

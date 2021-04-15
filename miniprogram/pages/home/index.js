@@ -195,6 +195,15 @@ Page({
 
   },
 
+  // 跳转详情
+  gotoDetails(e) {
+    let that = this;
+    let current_id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../details/index?id='+ current_id,
+    })
+  },
+
 
   onLoad() {
     this.getRecom();
