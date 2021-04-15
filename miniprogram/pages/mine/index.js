@@ -24,7 +24,8 @@ Page({
       icon_HL: '../../static/icon2_HL.png',
     }],
     works: [],
-    fabulous: [],
+    dzList: [],
+    dzListWorks: [],
   },
 
   //点击每个导航的点击事件
@@ -70,11 +71,15 @@ Page({
                   app.globalData.userInfo = res.data[0];
                 }
               })
-              that.getUserWorks();
             }
           })
       }
     })
+  },
+
+  onShow() {
+    this.getUserWorks();
+    this.getUserDzList();
   },
 
   // 点击授权
@@ -128,6 +133,36 @@ Page({
     .then(res => {
       that.setData({
         works: res.data
+      })
+    })
+  },
+
+  // 获取当前用户点赞的作品
+  getUserDzList() {
+    let that = this;
+
+    db.collection('user').where({
+      _openid: app.globalData.openid
+    })
+    .get()
+    .then(res => {
+      that.setData({
+        dzList: res.data[0].dzList
+      })
+      let works = [];
+
+      that.data.dzList.map(item => {
+        console.log(item);
+        db.collection('works').where({
+          _id: item
+        })
+        .get()
+        .then(res => {
+          works.push(res.data[0]);
+          that.setData({
+            dzListWorks: works
+          })
+        })
       })
     })
   },

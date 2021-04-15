@@ -10,19 +10,19 @@
   height: 574rpx;
 }
 
-.avatar-position {
+.avatar2-position {
   position: absolute;
   top: 255rpx;
 }
 
-.avatar-container {
+.avatar2-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 130rpx;
 }
 
-.avatar {
+.avatar2 {
   width: 120rpx;
   height: 120rpx;
   overflow: hidden;

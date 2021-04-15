@@ -13,8 +13,8 @@
   <view class="container">
     <!-- 用户信息 -->
     <image src="../../static/my@bg.png" class="bg"></image>
-    <open-data type="userAvatarUrl" class="avatar avatar-position" />
-    <open-data type="userNickName" class="avatar-container avatar-position" />
+    <open-data type="userAvatarUrl" class="avatar2 avatar2-position" />
+    <open-data type="userNickName" class="avatar2-container avatar2-position" />
 
     <!-- tab选项卡 -->
     <view class="about-container">
@@ -51,10 +51,12 @@
               </view>
               <view class="name">{{item.name}}</view>
               <!-- 点赞 -->
-              <view class="collection" data-id="{{item.id}}" data-dex="{{index}}" bindtap="giveLikes">
-                <image class="fabulous" src="../../static/fabulous_HL.png" mode="aspectFit"
-                  wx:if="{{item.fabulousState}}"></image>
-                <image class="fabulous" src="../../static/fabulous.png" mode="aspectFit" wx:else></image>
+              <view class="collection" data-id="{{item._id}}" data-dex="{{index}}" data-dz="{{item.isDz}}"
+                bindtap="{{!item.isDz ? 'giveLikes' : 'cancelLikes'}}">
+                <image class="fabulous"
+                  src="{{item.isDz ? '../../static/fabulous_HL.png' : '../../static/fabulous.png'}}" mode="aspectFit">
+                </image>
+                <!-- <image class="fabulous" src="../../static/fabulous.png" mode="aspectFit" wx:else></image> -->
                 <text>{{item.dianzanNum}}</text>
               </view>
             </view>
@@ -66,7 +68,7 @@
 
   <!-- 我的点赞 -->
   <view hidden='{{currentId != 2}}'>
-    <view wx:if="{{fabulous.length === 0}}" class="nocontent">
+    <view wx:if="{{dzList.length === 0}}" class="nocontent">
       <image class="no_img" src="../../static/no_dianzan.png"></image>
       <view class="no_font">
         还没有点赞任何作品哦，快去
@@ -75,7 +77,27 @@
       </view>
     </view>
     <view wx:self>
-      {{fabulous}}
+      <!-- 所有图片列表 -->
+      <view class="img-list">
+        <ul>
+          <li wx:for="{{dzListWorks}}" wx:key="index">
+            <image class="pic-img" src="{{item.pic_url[0]}}" mode="aspectFit"></image>
+            <text class="title">{{item.title}}</text>
+            <view class="img-list-other">
+              <!-- 发布者信息 -->
+              <view class="avatar">
+                <image class="avatar-img" src="{{item.avatar_url}}"></image>
+              </view>
+              <view class="name">{{item.name}}</view>
+              <!-- 点赞 -->
+              <view class="collection" data-id="{{item.id}}" data-dex="{{index}}" bindtap="giveLikes">
+                <image class="fabulous" src="../../static/fabulous_HL.png" mode="aspectFit"></image>
+                <text>{{item.dianzanNum}}</text>
+              </view>
+            </view>
+          </li>
+        </ul>
+      </view>
     </view>
   </view>
 </view>
