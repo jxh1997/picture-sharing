@@ -1,5 +1,6 @@
 const app = getApp()
 const db = wx.cloud.database();
+const _ = db.command;
 
 Page({
   data: {
@@ -40,7 +41,8 @@ Page({
           wx.showToast({
             title: '点赞成功',
           })
-          that.getUserDianzan("give");
+          that.getUserDianzan();
+          that.setDzNum('add' , current_id);
         },
         fail: res => {
           console.log(res);
@@ -82,7 +84,8 @@ Page({
         wx.showToast({
           title: '取消点赞',
         })
-        that.getUserDianzan("cancel");
+        that.getUserDianzan();
+        that.setDzNum('sub' , current_id);
       },
       fail: res => {
         console.log(res);
@@ -91,7 +94,7 @@ Page({
   },
 
   // 查询当前用户点赞作品列表
-  getUserDianzan(type) {
+  getUserDianzan() {
     let that = this;
     if (app.globalData.openid === '') {
       that.getOpenid()
@@ -164,10 +167,34 @@ Page({
     })
   },
 
-  // 获取作品发布者信息
-  // getWorkUser(openid) {
-  //   console.log("---------" , openid);
-  // },
+  // 对点赞操作进行加减
+  setDzNum(type , id) {
+    let that = this;
+    // 点赞+1
+    if(type === 'add') {
+      db.collection('works').doc(id).update({
+        data: {
+          dianzanNum: _.inc(1)
+        },
+        success: res => {
+          that.getWorks();
+          that.getUserDianzan();
+        }
+      })
+    } else {
+      db.collection('works').doc(id).update({
+        data: {
+          dianzanNum: _.inc(-1)
+        },
+        success: res => {
+          that.getWorks();
+          that.getUserDianzan()
+        }
+      })
+    }
+
+  },
+
 
   onLoad() {
     this.getRecom();
