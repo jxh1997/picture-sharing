@@ -60,12 +60,12 @@
     <view class="_div btn">
       <!-- 下载 -->
       <view catchtap="handleProxy" class="_div {{[dataObj.isCollection ? 'active' : '']}}">
-        <image src="{{dataObj.isCollection ? '/static/details/markActive.png':'/static/details/down.png'}}"
+        <image src="/static/details/down.png"
           mode="widthFix" class="_img"></image>
       </view>
       <!-- 点赞 -->
-      <view catchtap="handleProxy" class="_div {{[dataObj.isLike ? 'active' : '']}}">
-        <image src="{{dataObj.isLike ? '/static/details/likeActive.png':'/static/details/like.png'}}" mode="widthFix"
+      <view catchtap="setLike" class="_div {{[isLike ? 'active' : '']}}">
+        <image src="{{isLike ? '/static/details/likeActive.png':'/static/details/like.png'}}" mode="widthFix"
           class="_img"></image>
         {{works.dianzanNum}}
       </view>

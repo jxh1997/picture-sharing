@@ -42,7 +42,7 @@ Page({
             title: '点赞成功',
           })
           that.getUserDianzan();
-          that.setDzNum('add' , current_id);
+          that.setDzNum('add', current_id);
         },
         fail: res => {
           console.log(res);
@@ -57,7 +57,7 @@ Page({
     let current_id = e.currentTarget.dataset.id;
     let dzList = [];
 
-    that.data.dzList.map((item, index) => {
+    that.data.dzList.map((item) => {
       if (item === current_id) {
         for (let i = 0; i < that.data.works.length; i++) {
           if (that.data.works[i].isDz && that.data.works[i]._id === current_id) {
@@ -85,7 +85,7 @@ Page({
           title: '取消点赞',
         })
         that.getUserDianzan();
-        that.setDzNum('sub' , current_id);
+        that.setDzNum('sub', current_id);
       },
       fail: res => {
         console.log(res);
@@ -168,10 +168,10 @@ Page({
   },
 
   // 对点赞操作进行加减
-  setDzNum(type , id) {
+  setDzNum(type, id) {
     let that = this;
     // 点赞+1
-    if(type === 'add') {
+    if (type === 'add') {
       db.collection('works').doc(id).update({
         data: {
           dianzanNum: _.inc(1)
@@ -200,7 +200,7 @@ Page({
     let that = this;
     let current_id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../details/index?id='+ current_id,
+      url: '../details/index?id=' + current_id,
     })
   },
 
