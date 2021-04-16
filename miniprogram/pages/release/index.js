@@ -69,6 +69,7 @@ Page({
           success: res => {
             // 可能会有好几个200+的返回码，表示成功
             if (res.statusCode === 200 || res.statusCode === 204 || res.statusCode === 205) {
+              console.log(res);
               const urls = res.fileID;
               that.data.files.push(urls);
               let fileLength = that.data.files.length;  // 已经上传完成的数量

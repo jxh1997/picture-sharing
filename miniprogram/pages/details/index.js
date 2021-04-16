@@ -47,7 +47,6 @@ Page({
   },
 
   onShow() {
-    console.log(this.data.dzList);
     this.isDz()
   },
 
@@ -104,7 +103,6 @@ Page({
   isDz() {
     let that = this;
     that.data.dzList.map(dz => {
-      console.log(dz);
       if (dz === that.data.worksId) {
         that.setData({
           isLike: true
@@ -206,6 +204,61 @@ Page({
           console.log(res);
         }
       })
+    }
+  },
+
+  // 预览和保持图片
+  aloneDow(e) {
+    let src = e.currentTarget.dataset.src; // 获取data-src
+    let imgList = [];
+    imgList.push(src);
+    // 预览图片
+    wx.previewImage({
+      current: src, // 当前显示图片的http链接
+      urls: imgList // 需要预览的图片http链接列表
+    });
+  },
+
+  // 一键下载当前作品所有图片
+  DownloadImgList() {
+    let that = this;
+    if(that.data.works.pic_url.length === 0) {
+      // 判断数组是否有图片
+      wx.showToast({
+        title: '暂无图片下载',
+        icon: 'none',
+        duration: 2000
+      })
+      return false;
+    } else {
+      // 遍历所有图片进行下载
+      for( let i = 0 ; i < that.data.works.pic_url.length ; i ++) {
+        wx.cloud.downloadFile({
+          fileID: that.data.works.pic_url[i], // 需下载的每一张图片路径
+          success: res => {
+            wx.saveImageToPhotosAlbum({
+              filePath: res.tempFilePath,
+              success: function (res) {
+                if (res.errMsg == "saveImageToPhotosAlbum:ok") {
+                  wx.showToast({
+                    title: '图片下载成功',
+                    icon: 'success',
+                    duration: 2000
+                  })
+                }
+              }
+            })
+          },
+          fail: function (err) {
+            console.log(err);
+            wx.showToast({
+              title: '图片下载失败',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        })
+      }
     }
   },
 }) 

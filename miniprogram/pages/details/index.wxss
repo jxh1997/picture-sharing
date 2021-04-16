@@ -137,7 +137,9 @@
 
 .public-index-wrap .method-btn .btn {
   display: flex;
-  align-items: center
+  align-items: center;
+  justify-content: space-evenly;
+  flex: 1;
 }
 
 .public-index-wrap .method-btn .btn ._div {
@@ -195,4 +197,21 @@ _swiper-item {
 }
 .pl_text {
   font-size: 30rpx;
+}
+.down-text {
+  font-size: 24rpx;
+  color: #bfbfbf;
+}
+.down-content {
+  width: 150rpx;
+  margin-left: 30rpx;
+}
+.down-btn {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 10rpx;
+}
+.down-btn image {
+  width: 100%;
+  height: 100%;
 }

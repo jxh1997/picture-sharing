@@ -5,7 +5,7 @@
       <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}"
         class="_swiper">
         <block wx:key="index" key="{{index}}" wx:for="{{works.pic_url}}" wx:for-index="index" wx:for-item="item">
-          <swiper-item class="_swiper-item">
+          <swiper-item class="_swiper-item" data-src="{{item}}" bindtap="aloneDow">
             <image src="{{item}}" mode="aspectFill" class="_swiper-img"></image>
           </swiper-item>
         </block>
@@ -33,7 +33,8 @@
         </view>
       </view>
       <view wx:self class="_ul">
-        <view wx:key="index" key="{{index}}" wx:for="{{commentList}}" wx:for-index="index" wx:for-item="item" class="_li">
+        <view wx:key="index" key="{{index}}" wx:for="{{commentList}}" wx:for-index="index" wx:for-item="item"
+          class="_li">
           <view class="_div comment-l">
             <image src="{{item.avatarUrl}}" class="_img"></image>
             <view class="_div user">
@@ -56,12 +57,13 @@
       <input type="text" placeholder="写评论" value="{{postParams}}" bindinput="setCommentInput" maxlength="100"
         class="_input" />
       <image src="/static/details/release.png" bindtap="setComment" class="_img"></image>
+      
     </view>
-    <view class="_div btn">
+    <view class="_div btn ">
       <!-- 下载 -->
-      <view catchtap="handleProxy" class="_div {{[dataObj.isCollection ? 'active' : '']}}">
-        <image src="/static/details/down.png"
-          mode="widthFix" class="_img"></image>
+      <view catchtap="DownloadImgList" class="_div down-content">
+        <image src="/static/details/down.png" mode="widthFix" class="down-btn"></image>
+        <text class="down-text">一键下载</text>
       </view>
       <!-- 点赞 -->
       <view catchtap="setLike" class="_div {{[isLike ? 'active' : '']}}">
