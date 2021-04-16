@@ -67,7 +67,7 @@
       <view catchtap="setLike" class="_div {{[isLike ? 'active' : '']}}">
         <image src="{{isLike ? '/static/details/likeActive.png':'/static/details/like.png'}}" mode="widthFix"
           class="_img"></image>
-        {{works.dianzanNum}}
+        {{dianzanNum}}
       </view>
       <!-- 评论数 -->
       <view class="_div comment">

@@ -25,7 +25,8 @@
           </view>
           <view class="name">{{item.name}}</view>
           <!-- 点赞 -->
-          <view class="collection" data-id="{{item._id}}" data-dex="{{index}}" data-dz="{{item.isDz}}"  bindtap="{{!item.isDz ? 'giveLikes' : 'cancelLikes'}}" >
+          <!-- <view class="collection" data-id="{{item._id}}" data-dex="{{index}}" data-dz="{{item.isDz}}"  bindtap="{{!item.isDz ? 'giveLikes' : 'cancelLikes'}}" > -->
+          <view class="collection" data-id="{{item._id}}" data-dex="{{index}}" data-dz="{{item.isDz}}">
             <image class="fabulous" src="{{item.isDz ? '../../static/fabulous_HL.png' : '../../static/fabulous.png'}}" mode="aspectFit" ></image>
             <text>{{item.dianzanNum}}</text>
           </view>

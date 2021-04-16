@@ -16,8 +16,8 @@ exports.main = async (event, context) => {
     })
     .update({
       data: {
-         dzList: event.dzList
-      },
+        dzList: event.dzList
+      }      
     })
   } catch(e) {
     console.error(e)

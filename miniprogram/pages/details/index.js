@@ -20,6 +20,8 @@ Page({
     duration: 500,
     postParams: '',
     isLike: false,
+    dianzanNum: 0,
+    dzList: [],
   },
 
   /**
@@ -28,18 +30,25 @@ Page({
   onLoad: function (options) {
     let that = this;
     that.setData({
-      worksId: options.id
+      worksId: options.id,
+      dzList: app.globalData.userInfo.dzList
     })
+
     db.collection('works').doc(that.data.worksId)
-    .get({
-      success: res => {
-        that.setData({
-          works: res.data
-        })
-      }
-    })
+      .get({
+        success: res => {
+          that.setData({
+            works: res.data,
+            dianzanNum: res.data.dianzanNum
+          })
+        }
+      })
     that.getComment()
-    that.isDz()
+  },
+
+  onShow() {
+    console.log(this.data.dzList);
+    this.isDz()
   },
 
   // 写评论
@@ -83,21 +92,20 @@ Page({
     db.collection('comment').where({
       worksId: that.data.worksId
     })
-    .get()
-    .then(res => {
-      that.setData({
-        commentList: res.data
+      .get()
+      .then(res => {
+        that.setData({
+          commentList: res.data
+        })
       })
-    })
   },
 
   // 获取用户是否点赞
-  isDz(){
+  isDz() {
     let that = this;
-    console.log(app.globalData.userInfo.dzList);
-    let dzList = app.globalData.userInfo.dzList;
-    dzList.map(dz => {
-      if(dz === that.data.worksId) {
+    that.data.dzList.map(dz => {
+      console.log(dz);
+      if (dz === that.data.worksId) {
         that.setData({
           isLike: true
         })
@@ -109,17 +117,14 @@ Page({
   setLike() {
     let that = this;
     // 已点赞 => 取消点赞
-    if(that.data.isLike) {
-      let dzList = app.globalData.userInfo.dzList;
+    if (that.data.isLike) {
       let newDzList = [];
-      dzList.map(item => {
-        if(item === that.data.worksId) {
-          console.log(item);
-        } else {
+      that.data.dzList.map(item => {
+        if (!(item === that.data.worksId)) {
           newDzList.push(item);
         }
       })
-
+      app.globalData.userInfo.dzList = newDzList;
       wx.cloud.callFunction({
         name: 'giveLikes',
         data: {
@@ -135,36 +140,72 @@ Page({
         }
       })
     } else {
-
+      let dzList = that.data.dzList;
+      dzList.push(that.data.worksId);
+      app.globalData.userInfo.dzList = dzList;
+      wx.cloud.callFunction({
+        name: 'giveLikes',
+        data: {
+          openid: app.globalData.openid,
+          dzList: dzList
+        },
+        success: res => {
+          wx.showToast({
+            title: '点赞成功',
+          })
+          that.setDzNum('add');
+        }
+      })
     }
   },
 
-    // 对点赞操作进行加减
-    setDzNum(type) {
-      let that = this;
-      // 点赞+1
-      if (type === 'add') {
-        db.collection('works').doc(id).update({
-          data: {
-            dianzanNum: _.inc(1)
-          },
-          success: res => {
-            that.getWorks();
-            that.getUserDianzan();
-          }
-        })
-      } else {
-        db.collection('works').doc(that.data.worksId).update({
-          data: {
-            dianzanNum: _.inc(-1)
-          },
-          success: res => {
-            that.isDz()
-          }
-        })
-      }
-  
-    },
-
-
+  // 对点赞操作进行加减
+  setDzNum(type) {
+    let that = this;
+    let dzNum = that.data.works.dianzanNum;
+    // 点赞+1
+    if (type === 'add') {
+      wx.cloud.callFunction({
+        name: 'setWorks',
+        data: {
+          dzNum: ++dzNum,
+          worksId: that.data.worksId,
+        },
+        success: res => {
+          wx.showToast({
+            title: '点赞成功',
+            duration: 1000,
+          })
+          that.setData({
+            dianzanNum: dzNum,
+            isLike: true
+          })
+        },
+        fail: res => {
+          console.log(res);
+        }
+      })
+    } else {
+      wx.cloud.callFunction({
+        name: 'setWorks',
+        data: {
+          dzNum: --dzNum,
+          worksId: that.data.worksId,
+        },
+        success: res => {
+          wx.showToast({
+            title: '取消点赞',
+            duration: 1000,
+          })
+          that.setData({
+            dianzanNum: dzNum,
+            isLike: false
+          })
+        },
+        fail: res => {
+          console.log(res);
+        }
+      })
+    }
+  },
 }) 
