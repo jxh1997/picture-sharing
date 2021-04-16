@@ -1,0 +1,29 @@
+/* components/Tips/tips.wxss */
+.tips-content {
+  width: 180rpx;
+  height: 70rpx;
+  position: absolute;
+  bottom: 100rpx;
+  border: 1rpx solid #dddddd;
+  background-color: #ffffff;
+  box-shadow: 5rpx 5rpx 5rpx #dddddd;
+  border-radius: 20rpx;
+  cursor: pointer;
+  line-height: 70rpx; /*这一句不可少*/
+  z-index: 0;
+  display: inline-block; /*这一句不可少*/
+  vertical-align: middle;
+  text-align: center;
+}
+.b{
+  position: absolute;
+  top: 70rpx;
+  left: 100rpx;
+  width: 0px;                 /*  宽高设置为0，很重要，否则达不到效果 */
+  height: 0px;
+  border: 20rpx solid rgb(255, 255, 255);
+  border-bottom-color: transparent;    /* 设置透明背景色 */
+  border-left-color: transparent;
+  border-right-color: transparent;
+  box-shadow: #dddddd;
+}

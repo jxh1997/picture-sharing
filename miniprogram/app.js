@@ -15,7 +15,7 @@ App({
       
       let that = this;
       const db = wx.cloud.database();
-
+      
       // 查看是否授权
       wx.cloud.callFunction({
         name: 'getopenid',
@@ -26,7 +26,20 @@ App({
           })
           .get()
           .then(res => {
-            that.globalData.userInfo = res.data[0]
+            if (res.data == "") {
+              console.log('用户未授权，前往授权登录!');
+              that.globalData.isLogin = false;
+            } else {
+              console.log("已经登录过不用授权，直接登录")
+              that.globalData.isLogin = true;
+              db.collection('user').where({
+                _openid: that.globalData.openid,
+              }).get({
+                success(res) {
+                  that.globalData.userInfo = res.data[0];
+                }
+              })
+            }
           })
         }
       })
@@ -37,6 +50,8 @@ App({
       works: [],
       fabulous: [],
       recommend: [],
+      firstLogin: true,   // 判断用户是不是第一次登录
+      isLogin: false,  // 是否登录
     }
   },
 })

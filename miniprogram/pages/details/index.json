@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "Tips": "../../components/Tips/tips"
+  },
   "navigationBarTitleText": "详情"
 }

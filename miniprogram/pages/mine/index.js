@@ -43,38 +43,24 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    // 查看是否授权
-    wx.cloud.callFunction({
-      name: 'getopenid',
-      complete: res => {
-        app.globalData.openid = res.result.openid
-        // 查询数据库是否有该用户信息
-        db.collection('user').where({
-          _openid: app.globalData.openid
-        })
-          .get()
-          .then(res => {
-            if (res.data == "") {
-              console.log('用户未授权，前往授权登录!');
-              that.setData({
-                isLogin: false
-              })
-            } else {
-              console.log("已经登录过不用授权，直接登录")
-              that.setData({
-                isLogin: true
-              })
-              db.collection('user').where({
-                _openid: app.globalData.openid,
-              }).get({
-                success(res) {
-                  app.globalData.userInfo = res.data[0];
-                }
-              })
-            }
-          })
-      }
+    that.setData({
+      isLogin: app.globalData.isLogin
     })
+    // 查看是否授权
+    // wx.cloud.callFunction({
+    //   name: 'getopenid',
+    //   complete: res => {
+    //     app.globalData.openid = res.result.openid
+    //     // 查询数据库是否有该用户信息
+    //     db.collection('user').where({
+    //       _openid: app.globalData.openid
+    //     })
+    //       .get()
+    //       .then(res => {
+            
+    //       })
+    //   }
+    // })
   },
 
   onShow() {

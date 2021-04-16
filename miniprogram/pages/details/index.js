@@ -5,7 +5,6 @@ const util = require('../../utils/util');
 const _ = db.command;
 
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -261,4 +260,19 @@ Page({
       }
     }
   },
+
+  // 分享
+  onShareAppMessage() {
+    let that = this;
+    const promise = new Promise(resolve => {
+      resolve({
+        title: that.data.works.title,
+      })
+    })
+    return {
+      title: that.data.works.title,
+      path: '/miniprogram/pages/details?id=' + that.data.worksId,
+      promise 
+    }
+  }
 }) 

@@ -1,0 +1,5 @@
+<!--components/Tips/tips.wxml-->
+<view class="tips-content" style="right:{{right}}rpx">
+  {{tipContent}}
+  <b class='b'></b>
+</view>

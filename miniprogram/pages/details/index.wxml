@@ -61,9 +61,15 @@
     </view>
     <view class="_div btn ">
       <!-- 下载 -->
-      <view catchtap="DownloadImgList" class="_div down-content">
+      <view catchtap="DownloadImgList" class="_div">
         <image src="/static/details/down.png" mode="widthFix" class="down-btn"></image>
-        <text class="down-text">一键下载</text>
+        <!-- <text class="down-text">一键下载</text> -->
+      </view>
+      <!-- 分享 -->
+      <view catchtap="fenxiang" class="_div">
+        <button open-type="share" class="fx-btn">
+          <image src="/static/details/fenxiang.png" mode="widthFix" class="down-btn"></image>
+        </button>
       </view>
       <!-- 点赞 -->
       <view catchtap="setLike" class="_div {{[isLike ? 'active' : '']}}">
@@ -76,6 +82,7 @@
         <image src="/static/details/message.png" mode="widthFix" class="_img"></image>
         {{commentList.length}}
       </view>
+      <Tips></Tips>
     </view>
   </view>
 </view>
