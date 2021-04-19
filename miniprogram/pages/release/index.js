@@ -92,7 +92,7 @@ Page({
                 // 上传图片
                 // 上传返回值
                 const filesObj = {};
-                // const filesObj2 = {};
+                const filesObj2 = {};
                 for (let i = 0; i < tempFilePaths.length; i++) {
                   let filePath = '';
                   let cloudPath = '';
@@ -115,12 +115,12 @@ Page({
                           filesObj.urls = that.data.files;
                           resolve(filesObj)  // 这就是判断是不是最后一张已经上传了，用来返回
                         }
-                        // else if (fileLength > pathLength) {
-                        //   let files2 = [];
-                        //   files2.push(that.data.files[fileLength - 1])
-                        //   filesObj2.urls = files2;
-                        //   resolve(filesObj2)
-                        // }
+                        else if (fileLength > pathLength) {
+                          let files2 = [];
+                          files2.push(that.data.files[fileLength - 1])
+                          filesObj2.urls = files2;
+                          resolve(filesObj2)
+                        }
                       } else {
                         reject('error')
                       }
@@ -204,7 +204,6 @@ Page({
     } else {
       let check_msg = that.checkMsg(that.data.content);
       check_msg.then(res => {
-        console.log("文章内容是否违规: ", res);
         // 文章内容是否违规
         if (res.result.errCode && res.result.errCode == 87014) {
           wx.showToast({
@@ -228,10 +227,11 @@ Page({
             success: res => {
               console.log(res);
               // 提交成功，清空表单内容
-              this.setData({
-                title: '',
-                content: '',
-                filesSuccess: [],
+              that.setData({
+                files: [],
+                filesSuccess: [],  // 成功上传的图片
+                title: '',  // 文章标题
+                content: '', // 正文内容
               })
               wx.showToast({
                 title: '发布成功',

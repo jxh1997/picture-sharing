@@ -14,10 +14,10 @@
   <form catchsubmit="formSubmit" catchreset="formReset" class="form-content">
     <view class="page-section">
       <!-- 标题 -->
-      <input bindinput="titleInput" class="weui-input title-input" name="input" placeholder="认真填写标题会有更多赞哦 ~ " />
+      <input bindinput="titleInput" class="weui-input title-input" name="input" placeholder="认真填写标题会有更多赞哦 ~ " value="{{title}}"/>
       <view class="line"></view>
       <!-- 正文内容 -->
-      <textarea class="text-textarea" bindinput="contentInput" name="textarea" placeholder="添 加 正 文" placeholder-style="color:#a3a3a3;" />
+      <textarea class="text-textarea" bindinput="contentInput" name="textarea" placeholder="添 加 正 文" placeholder-style="color:#a3a3a3;" value="{{content}}"/>
       <view class="line"></view>
     </view>
 

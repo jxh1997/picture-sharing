@@ -183,11 +183,11 @@ _swiper-item {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 40rpx;
+  padding-top: 20rpx;
 }
 .no_img {
-  width: 120rpx;
-  height: 120rpx;
+  width: 100rpx;
+  height: 100rpx;
   margin-bottom: 40rpx;
 }
 .no_font {

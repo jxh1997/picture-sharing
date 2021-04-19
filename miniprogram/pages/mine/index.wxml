@@ -52,12 +52,12 @@
               <view class="name">{{item.name}}</view>
               <!-- 点赞 -->
               <view class="collection" data-id="{{item._id}}" data-dex="{{index}}" data-dz="{{item.isDz}}">
-                <image class="fabulous" src="../../static/fabulous.png" mode="aspectFit"></image>
+                <image class="fabulous" src="../../static/details/dianzan.png" mode="aspectFit"></image>
                 <text>{{item.dianzanNum}}</text>
               </view>
               <!-- 评论数 -->
               <view class="collection" data-id="{{item.id}}" data-dex="{{index}}">
-                <image class="fabulous" src="../../static/details/message.png" mode="aspectFit"></image>
+                <image class="fabulous" src="../../static/details/pinglun2.png" mode="aspectFit"></image>
                 <text>{{item.pinglunNum}}</text>
               </view>
             </view>
@@ -81,7 +81,7 @@
       <!-- 所有图片列表 -->
       <view class="img-list">
         <ul>
-          <li wx:for="{{dzListWorks}}" wx:key="index">
+          <li wx:for="{{dzListWorks}}" wx:key="index" data-id="{{item._id}}" bindtap="gotoDetails">
             <image class="pic-img" src="{{item.pic_url[0]}}" mode="aspectFit"></image>
             <text class="title">{{item.title}}</text>
             <view class="img-list-other">
@@ -92,7 +92,7 @@
               <view class="name">{{item.name}}</view>
               <!-- 点赞数 -->
               <view class="collection" data-id="{{item.id}}" data-dex="{{index}}">
-                <image class="fabulous" src="../../static/fabulous_HL.png" mode="aspectFit"></image>
+                <image class="fabulous" src="../../static/details/like2.png" mode="aspectFit"></image>
                 <text>{{item.dianzanNum}}</text>
               </view>
             </view>
