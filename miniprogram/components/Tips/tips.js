@@ -1,5 +1,3 @@
-const { get } = require("http");
-
 // components/Tips/tips.js
 const app = getApp()
 

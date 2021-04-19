@@ -18,10 +18,10 @@
           <view class="_p">{{works.name}}</view>
         </view>
       </view>
+      <view class="time">TIME: {{works.time}}</view>
       <view class="_div content">
         <view class="_div title">{{works.title}}</view>
         <view class="_div desc">{{works.content}}</view>
-        <view class="_div time">{{works.time}}</view>
       </view>
     </view>
     <view class="_div comment-list">

@@ -60,6 +60,12 @@
           "pathName": "pages/databaseGuide/databaseGuide"
         }
       ]
+    },
+    "permissions": {
+      "openapi": [
+        "security.imgSecCheck",
+        "security.msgSecCheck"
+      ]
     }
   }
 }

@@ -20,7 +20,7 @@
 .public-index-wrap .information .user-head .head-l {
   display: flex;
   align-items: center;
-  width: 100%
+  width: 50%;
 }
 
 .avatar_img {
@@ -31,6 +31,7 @@
 }
 
 .public-index-wrap .information .content .title {
+  clear: both;
   font-size: 16;
   font-weight: 700;
   margin-bottom: 30rpx
@@ -40,14 +41,18 @@
   font-size: 28rpx
 }
 
-.public-index-wrap .information .content .time {
+.time {
   font-size: 24rpx;
   color: #999;
-  margin-top: 20rpx
+  /* margin-top: 20rpx; */
+  margin-bottom: 20rpx;
+  float: right;
 }
 
 .public-index-wrap .comment-list {
-  padding-bottom: 100rpx
+  padding-bottom: 100rpx;
+  padding-top: 20rpx;
+  border-top: 2px solid #eee;
 }
 
 .public-index-wrap .comment-list .comment-title {

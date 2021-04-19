@@ -96,7 +96,6 @@ Page({
 
   // 跳转详情
   gotoDetails(e) {
-    let that = this;
     let current_id = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: '../details/index?id=' + current_id,
@@ -130,9 +129,7 @@ Page({
           dzList: res.data[0].dzList
         })
         let works = [];
-
         that.data.dzList.map(item => {
-          console.log(item);
           db.collection('works').where({
             _id: item
           })

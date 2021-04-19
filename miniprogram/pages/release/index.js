@@ -17,6 +17,9 @@ Page({
     })
   },
 
+  onShow() {
+  },
+
   // 选择图片
   chooseImage: function (e) {
     var that = this;
@@ -24,10 +27,12 @@ Page({
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
+        console.log(res);
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
           files: that.data.files.concat(res.tempFilePaths)
         });
+
       }
     })
   },
@@ -42,58 +47,100 @@ Page({
 
   // 选择图片时的过滤函数
   selectFile(files) {
-    console.log('files', files)
     // 返回false可以阻止某次文件上传
+    console.log('files', files)
   },
 
-  // 上传图片
+  // 上传图片时执行的函数
   uplaodFile(files) {
     let that = this;
     console.log('upload files', files)
     // 文件上传的函数，返回一个promise    
     return new Promise((resolve, reject) => {
       const tempFilePaths = files.tempFilePaths;
-      // 上传返回值
-      const filesObj = {};
-      const filesObj2 = {};
-      for (let i = 0; i < tempFilePaths.length; i++) {
-        let filePath = '';
-        let cloudPath = '';
-        filePath = tempFilePaths[i];
-        // 上传图片
-        // cloudPath 最好按时间 遍历的index来排序，避免文件名重复
-        cloudPath = 'works-pic-' + new Date().getTime() + '-' + i + filePath.match(/\.[^.]+?$/)[0];
-        wx.cloud.uploadFile({
-          filePath,
-          cloudPath,
+      let tempFiles = files.tempFiles;
+      tempFiles.forEach((ele) => {
+        // 限制图片大小格式
+        if (ele && ele.size > 1024 * 1024) {
+          wx.showToast({
+            title: '图片不能大于1M,请重新上传!',
+            icon: 'none'
+          })
+          reject(err);
+        }
+        // 图片转化buffer后，调用云函数
+        wx.getFileSystemManager().readFile({
+          filePath: ele.path,
           success: res => {
-            // 可能会有好几个200+的返回码，表示成功
-            if (res.statusCode === 200 || res.statusCode === 204 || res.statusCode === 205) {
-              console.log(res);
-              const urls = res.fileID;
-              that.data.files.push(urls);
-              let fileLength = that.data.files.length;  // 已经上传完成的数量
-              let pathLength = tempFilePaths.length;    // 
+            wx.showLoading({
+              title: '内容审查中...',
+            })
+            let check_img = that.checkImg(res.data);
+            check_img.then(res => {
+              // 图片是否违规
+              if (res.result.errCode && res.result.errCode == 87014) {
+                wx.showToast({
+                  title: '图片含有违法违规内容!',
+                  icon: 'none'
+                })
+              } else {
+                wx.showToast({
+                  title: '审查通过',
+                })
+                wx.hideLoading();
+                wx.hideToast();
+                // 上传图片
+                // 上传返回值
+                const filesObj = {};
+                // const filesObj2 = {};
+                for (let i = 0; i < tempFilePaths.length; i++) {
+                  let filePath = '';
+                  let cloudPath = '';
+                  filePath = tempFilePaths[i];
+                  // 上传图片
+                  // cloudPath 最好按时间 遍历的index来排序，避免文件名重复
+                  cloudPath = 'works-pic-' + new Date().getTime() + '-' + i + filePath.match(/\.[^.]+?$/)[0];
+                  wx.cloud.uploadFile({
+                    filePath,
+                    cloudPath,
+                    success: res => {
+                      // 可能会有好几个200+的返回码，表示成功
+                      if (res.statusCode === 200 || res.statusCode === 204 || res.statusCode === 205) {
+                        const urls = res.fileID;
+                        that.data.files.push(urls);
+                        let fileLength = that.data.files.length;  // 已经上传完成的数量
+                        let pathLength = tempFilePaths.length;    // 上传图片的数量
 
-              if (fileLength === pathLength) {
-                filesObj.urls = that.data.files;
-                resolve(filesObj)  // 这就是判断是不是最后一张已经上传了，用来返回，
+                        if (fileLength === pathLength) {
+                          filesObj.urls = that.data.files;
+                          resolve(filesObj)  // 这就是判断是不是最后一张已经上传了，用来返回
+                        }
+                        // else if (fileLength > pathLength) {
+                        //   let files2 = [];
+                        //   files2.push(that.data.files[fileLength - 1])
+                        //   filesObj2.urls = files2;
+                        //   resolve(filesObj2)
+                        // }
+                      } else {
+                        reject('error')
+                      }
+                    },
+                    fail: function (err) {
+                      console.log(err)
+                    }
+                  })
+                }
               }
-              else if (fileLength > pathLength) {
-                let files2 = [];
-                files2.push(that.data.files[fileLength - 1])
-                filesObj2.urls = files2;
-                resolve(filesObj2)
-              }
-            } else {
-              reject('error')
-            }
+            })
+              .catch(err => {
+                console.log(err);
+              })
           },
-          fail: function (err) {
-            console.log(err)
+          fail: err => {
+            reject(err);
           }
         })
-      }
+      })
     })
   },
 
@@ -155,30 +202,75 @@ Page({
         })
       }, 1500)
     } else {
-      console.log(app.globalData.userInfo);
-      db.collection('works').add({
-        data: {
-          avatar_url: app.globalData.userInfo.avatarUrl,
-          name: app.globalData.userInfo.nickName,
-          title: that.data.title,
-          content: that.data.content,
-          pic_url: that.data.filesSuccess,
-          time: util.formatTime(new Date()),
-          dianzanNum: 0,
-          pinglunNum: 0,
-        },
-        success: res => {
+      let check_msg = that.checkMsg(that.data.content);
+      check_msg.then(res => {
+        console.log("文章内容是否违规: ", res);
+        // 文章内容是否违规
+        if (res.result.errCode && res.result.errCode == 87014) {
           wx.showToast({
-            title: '发布成功',
-            icon: 'success'
+            title: '文章内容含有违法违规内容!',
+            icon: 'none'
           })
-          setTimeout(() => {
-            wx.switchTab({
-              url: '../home/index'
-            })
-          }, 1500)
+        } else {
+          console.log("文章内容没有违规");
+          // 上传文章内容
+          db.collection('works').add({
+            data: {
+              avatar_url: app.globalData.userInfo.avatarUrl,
+              name: app.globalData.userInfo.nickName,
+              title: that.data.title,
+              content: that.data.content,
+              pic_url: that.data.filesSuccess,
+              time: util.formatTime(new Date()),
+              dianzanNum: 0,
+              pinglunNum: 0,
+            },
+            success: res => {
+              console.log(res);
+              // 提交成功，清空表单内容
+              this.setData({
+                title: '',
+                content: '',
+                filesSuccess: [],
+              })
+              wx.showToast({
+                title: '发布成功',
+                icon: 'success'
+              })
+              setTimeout(() => {
+                wx.switchTab({
+                  url: '../home/index'
+                })
+              }, 1500)
+
+              
+            }
+          })
         }
       })
+        .catch(err => {
+          console.log(err);
+        })
     }
+  },
+
+  // 图片内容审查
+  checkImg(img) {
+    return wx.cloud.callFunction({
+      name: 'imgSecCheck',
+      data: {
+        img: img
+      }
+    })
+  },
+
+  // 文字内容审查
+  checkMsg(msg) {
+    return wx.cloud.callFunction({
+      name: 'msgSecCheck',
+      data: {
+        content: msg
+      }
+    })
   },
 });
