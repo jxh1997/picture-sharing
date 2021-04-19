@@ -12,6 +12,7 @@ Page({
     worksId: '',
     works: {},
     commentList: [],
+    pinglunNum: 0,
     indicatorDots: true,
     vertical: false,
     autoplay: false,
@@ -59,7 +60,6 @@ Page({
   // 评论发布
   setComment() {
     let that = this;
-    console.log(app.globalData.userInfo);
     db.collection('comment').add({
       data: {
         worksId: that.data.worksId,
@@ -72,6 +72,7 @@ Page({
         that.setData({
           postParams: ''
         })
+        that.setPlNum()
         wx.showToast({
           title: '评论成功',
           duration: 1000,
@@ -92,8 +93,10 @@ Page({
     })
       .get()
       .then(res => {
+        console.log(res.data);
         that.setData({
-          commentList: res.data
+          commentList: res.data,
+          pinglunNum: res.data.length
         })
       })
   },
@@ -129,10 +132,6 @@ Page({
           dzList: newDzList
         },
         success: res => {
-          console.log(res);
-          wx.showToast({
-            title: '取消点赞',
-          })
           that.setDzNum('sub');
         }
       })
@@ -147,9 +146,6 @@ Page({
           dzList: dzList
         },
         success: res => {
-          wx.showToast({
-            title: '点赞成功',
-          })
           that.setDzNum('add');
         }
       })
@@ -165,6 +161,7 @@ Page({
       wx.cloud.callFunction({
         name: 'setWorks',
         data: {
+          type: 'dianzan',
           dzNum: ++dzNum,
           worksId: that.data.worksId,
         },
@@ -186,6 +183,7 @@ Page({
       wx.cloud.callFunction({
         name: 'setWorks',
         data: {
+          type: 'dianzan',
           dzNum: --dzNum,
           worksId: that.data.worksId,
         },
@@ -204,6 +202,27 @@ Page({
         }
       })
     }
+  },
+
+  // 对作品添加评论数量
+  setPlNum() {
+    let that = this;
+    let plNum = that.data.pinglunNum;
+    // 评论+1
+    wx.cloud.callFunction({
+      name: 'setWorks',
+      data: {
+        type: 'pinglun',
+        plNum: ++plNum,
+        worksId: that.data.worksId,
+      },
+      success: res => {
+        console.log("评论成功： " , res);
+      },
+      fail: res => {
+        console.log(res);
+      }
+    })
   },
 
   // 预览和保持图片

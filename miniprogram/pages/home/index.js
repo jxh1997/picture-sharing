@@ -16,82 +16,82 @@ Page({
   },
 
   // 点赞
-  giveLikes(e) {
-    let that = this;
-    let current_id = e.currentTarget.dataset.id;
-    if (app.globalData.openid === '') {
-      wx.showToast({
-        title: '当前用户未登录，请前往登录',
-        icon: 'none'
-      })
-      setTimeout(() => {
-        wx.switchTab({
-          url: '../mine/index'
-        })
-      }, 1500)
-    } else {
-      that.data.dzList.push(current_id);
-      wx.cloud.callFunction({
-        name: 'giveLikes',
-        data: {
-          openid: app.globalData.openid,
-          dzList: that.data.dzList
-        },
-        success: res => {
-          wx.showToast({
-            title: '点赞成功',
-          })
-          that.getUserDianzan();
-          that.setDzNum('add', current_id);
-        },
-        fail: res => {
-          console.log(res);
-        }
-      })
-    }
-  },
+  // giveLikes(e) {
+  //   let that = this;
+  //   let current_id = e.currentTarget.dataset.id;
+  //   if (app.globalData.openid === '') {
+  //     wx.showToast({
+  //       title: '当前用户未登录，请前往登录',
+  //       icon: 'none'
+  //     })
+  //     setTimeout(() => {
+  //       wx.switchTab({
+  //         url: '../mine/index'
+  //       })
+  //     }, 1500)
+  //   } else {
+  //     that.data.dzList.push(current_id);
+  //     wx.cloud.callFunction({
+  //       name: 'giveLikes',
+  //       data: {
+  //         openid: app.globalData.openid,
+  //         dzList: that.data.dzList
+  //       },
+  //       success: res => {
+  //         wx.showToast({
+  //           title: '点赞成功',
+  //         })
+  //         that.getUserDianzan();
+  //         that.setDzNum('add', current_id);
+  //       },
+  //       fail: res => {
+  //         console.log(res);
+  //       }
+  //     })
+  //   }
+  // },
 
   // 取消点赞
-  cancelLikes(e) {
-    let that = this;
-    let current_id = e.currentTarget.dataset.id;
-    let dzList = [];
+  // cancelLikes(e) {
+  //   let that = this;
+  //   let current_id = e.currentTarget.dataset.id;
+  //   let dzList = [];
 
-    that.data.dzList.map((item) => {
-      if (item === current_id) {
-        for (let i = 0; i < that.data.works.length; i++) {
-          if (that.data.works[i].isDz && that.data.works[i]._id === current_id) {
-            const worksDZ = "works[" + i + "].isDz"
-            that.setData({
-              [worksDZ]: false
-            })
-          }
-        }
-      } else {
-        dzList.push(item);
-      }
-    })
-    that.setData({
-      dzList: dzList
-    })
-    wx.cloud.callFunction({
-      name: 'giveLikes',
-      data: {
-        openid: app.globalData.openid,
-        dzList: that.data.dzList
-      },
-      success: res => {
-        wx.showToast({
-          title: '取消点赞',
-        })
-        that.getUserDianzan();
-        that.setDzNum('sub', current_id);
-      },
-      fail: res => {
-        console.log(res);
-      }
-    })
-  },
+  //   that.data.dzList.map((item) => {
+  //     if (item === current_id) {
+  //       for (let i = 0; i < that.data.works.length; i++) {
+  //         if (that.data.works[i].isDz && that.data.works[i]._id === current_id) {
+  //           const worksDZ = "works[" + i + "].isDz"
+  //           that.setData({
+  //             [worksDZ]: false
+  //           })
+  //         }
+  //       }
+  //     } else {
+  //       dzList.push(item);
+  //     }
+  //   })
+  //   that.setData({
+  //     dzList: dzList
+  //   })
+  //   wx.cloud.callFunction({
+  //     name: 'giveLikes',
+  //     data: {
+  //       openid: app.globalData.openid,
+  //       dzList: that.data.dzList
+  //     },
+  //     success: res => {
+  //       wx.showToast({
+  //         title: '取消点赞',
+  //       })
+  //       that.getUserDianzan();
+  //       that.setDzNum('sub', current_id);
+  //     },
+  //     fail: res => {
+  //       console.log(res);
+  //     }
+  //   })
+  // },
 
   // 查询当前用户点赞作品列表
   getUserDianzan() {
@@ -110,9 +110,6 @@ Page({
           that.data.works.map((worksItem, index) => {
             that.data.dzList.map(dzItem => {
               if (worksItem._id === dzItem) {
-                that.setData({
-                  dzList: res.data[0].dzList
-                })
                 const worksDZ = "works[" + index + "].isDz"
                 that.setData({
                   [worksDZ]: true
@@ -168,32 +165,31 @@ Page({
   },
 
   // 对点赞操作进行加减
-  setDzNum(type, id) {
-    let that = this;
-    // 点赞+1
-    if (type === 'add') {
-      db.collection('works').doc(id).update({
-        data: {
-          dianzanNum: _.inc(1)
-        },
-        success: res => {
-          that.getWorks();
-          that.getUserDianzan();
-        }
-      })
-    } else {
-      db.collection('works').doc(id).update({
-        data: {
-          dianzanNum: _.inc(-1)
-        },
-        success: res => {
-          that.getWorks();
-          that.getUserDianzan()
-        }
-      })
-    }
-
-  },
+  // setDzNum(type, id) {
+  //   let that = this;
+  //   // 点赞+1
+  //   if (type === 'add') {
+  //     db.collection('works').doc(id).update({
+  //       data: {
+  //         dianzanNum: _.inc(1)
+  //       },
+  //       success: res => {
+  //         that.getWorks();
+  //         that.getUserDianzan();
+  //       }
+  //     })
+  //   } else {
+  //     db.collection('works').doc(id).update({
+  //       data: {
+  //         dianzanNum: _.inc(-1)
+  //       },
+  //       success: res => {
+  //         that.getWorks();
+  //         that.getUserDianzan()
+  //       }
+  //     })
+  //   }
+  // },
 
   // 跳转详情
   gotoDetails(e) {

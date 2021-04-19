@@ -9,8 +9,11 @@ const _ = db.command
 
 
 exports.main = async (event, context) => {
+  console.log(event);
   try {
-    return await db.collection('works').doc(event.worksId)
+    if(event.type === 'dianzan') {
+      // 点赞
+      return await db.collection('works').doc(event.worksId)
       .update({
         data: {
           dianzanNum: event.dzNum,
@@ -24,6 +27,23 @@ exports.main = async (event, context) => {
         console.log("改变点赞状态失败", err);
         return err
       })
+    } else if(event.type === 'pinglun') {
+      // 评论
+      return await db.collection('works').doc(event.worksId)
+      .update({
+        data: {
+          pinglunNum: event.plNum,
+        },
+      })
+      .then(res => {
+        console.log("评论成功+1", res);
+        return res
+      })
+      .catch(err => {
+        console.log("评论失败", err);
+        return err
+      })
+    }
   } catch (e) {
     console.error(e)
   }

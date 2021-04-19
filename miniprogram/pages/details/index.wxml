@@ -80,7 +80,7 @@
       <!-- 评论数 -->
       <view class="_div comment">
         <image src="/static/details/message.png" mode="widthFix" class="_img"></image>
-        {{commentList.length}}
+        {{pinglunNum}}
       </view>
       <Tips></Tips>
     </view>

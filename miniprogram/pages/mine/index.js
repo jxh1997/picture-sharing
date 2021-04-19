@@ -46,21 +46,6 @@ Page({
     that.setData({
       isLogin: app.globalData.isLogin
     })
-    // 查看是否授权
-    // wx.cloud.callFunction({
-    //   name: 'getopenid',
-    //   complete: res => {
-    //     app.globalData.openid = res.result.openid
-    //     // 查询数据库是否有该用户信息
-    //     db.collection('user').where({
-    //       _openid: app.globalData.openid
-    //     })
-    //       .get()
-    //       .then(res => {
-            
-    //       })
-    //   }
-    // })
   },
 
   onShow() {
@@ -109,18 +94,27 @@ Page({
     })
   },
 
+  // 跳转详情
+  gotoDetails(e) {
+    let that = this;
+    let current_id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../details/index?id=' + current_id,
+    })
+  },
+
   // 获取当前用户发布的作品
   getUserWorks() {
     let that = this;
     db.collection('works').where({
       _openid: app.globalData.openid
     })
-    .get()
-    .then(res => {
-      that.setData({
-        works: res.data
+      .get()
+      .then(res => {
+        that.setData({
+          works: res.data
+        })
       })
-    })
   },
 
   // 获取当前用户点赞的作品
@@ -130,26 +124,26 @@ Page({
     db.collection('user').where({
       _openid: app.globalData.openid
     })
-    .get()
-    .then(res => {
-      that.setData({
-        dzList: res.data[0].dzList
-      })
-      let works = [];
+      .get()
+      .then(res => {
+        that.setData({
+          dzList: res.data[0].dzList
+        })
+        let works = [];
 
-      that.data.dzList.map(item => {
-        console.log(item);
-        db.collection('works').where({
-          _id: item
-        })
-        .get()
-        .then(res => {
-          works.push(res.data[0]);
-          that.setData({
-            dzListWorks: works
+        that.data.dzList.map(item => {
+          console.log(item);
+          db.collection('works').where({
+            _id: item
           })
+            .get()
+            .then(res => {
+              works.push(res.data[0]);
+              that.setData({
+                dzListWorks: works
+              })
+            })
         })
       })
-    })
   },
-})
+}) 
