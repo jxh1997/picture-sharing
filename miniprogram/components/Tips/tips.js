@@ -1,4 +1,8 @@
+const { get } = require("http");
+
 // components/Tips/tips.js
+const app = getApp()
+
 Component({
   /**
    * 组件的属性列表
@@ -12,7 +16,8 @@ Component({
    */
   data: {
     right: 270,
-    tipContent: '一键下载图片'
+    tipContent: '一键下载图片',
+    isShow: true,
   },
 
   /**
@@ -20,5 +25,20 @@ Component({
    */
   methods: {
 
-  }
+  },
+
+  created: function() {
+    setTimeout(() => {
+      this.setData({
+        right: 200,
+        tipContent: '图片分享'
+      })
+    }, 3000);
+    setTimeout(() => {
+      this.setData({
+        isShow: false
+      })
+    }, 6000);
+  },
+
 })

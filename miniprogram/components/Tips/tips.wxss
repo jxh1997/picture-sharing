@@ -4,8 +4,8 @@
   height: 70rpx;
   position: absolute;
   bottom: 100rpx;
-  border: 1rpx solid #dddddd;
-  background-color: #ffffff;
+  /* border: 1rpx solid #dddddd; */
+  /* background-color: #ffffff; */
   box-shadow: 5rpx 5rpx 5rpx #dddddd;
   border-radius: 20rpx;
   cursor: pointer;
@@ -14,6 +14,10 @@
   display: inline-block; /*这一句不可少*/
   vertical-align: middle;
   text-align: center;
+
+  background: #88b7d5;
+  border: 1px solid #c2e1f5;
+  color: #abe246;
 }
 .b{
   position: absolute;
@@ -26,4 +30,6 @@
   border-left-color: transparent;
   border-right-color: transparent;
   box-shadow: #dddddd;
+  border-color: rgba(136, 183, 213, 0);
+	border-top-color: #88b7d5;
 }
